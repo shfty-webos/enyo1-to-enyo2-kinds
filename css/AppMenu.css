@@ -7,3 +7,6 @@
   left: 0px;
   min-width: 210px;
 }
+.enyo-appmenu .enyo-item {
+  padding: 10px;
+}
