@@ -857,9 +857,6 @@ enyo.kind({
 			this._freeSelectPopups.push(this._cachedSelectPopups[p]);
 		}
 		this._cachedSelectPopups = {};
-		for (var k in inEvent) {
-			console.log("in inEvent: " + k, typeof inEvent[k]);
-		}
 		this.doPageTitleChanged(inEvent);
 	},
 	alertDialog: function() {
