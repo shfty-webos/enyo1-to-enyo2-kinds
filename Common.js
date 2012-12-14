@@ -17,7 +17,13 @@
 // if we're on webOS/Open webOS, write a relaunch method to handle app menu
 if (window.PalmSystem) {
 	Mojo.relaunch = function() {
-		var lp = enyo.webOS.launchParams();
+		var lp = PalmSystem.launchParams;
+		try {
+			lp = lp && enyo.json.parse(lp);
+		} catch(e) {
+			console.error("Invalid launch params: " + e);
+			lp = {};
+		}
 
 		if (lp['palm-command'] && lp['palm-command'] == 'open-app-menu') {
 			enyo.Signals.send("onToggleAppMenu");
