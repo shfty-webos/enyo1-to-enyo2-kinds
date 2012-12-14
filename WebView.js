@@ -425,7 +425,9 @@ enyo.kind({
 	// (browser adapter callback) generates event that can be used to show
 	// load progress
 	loadProgressChanged: function(inProgress) {
-		this.doLoadProgress(inProgress);
+		this.doLoadProgress({
+			inProgress: inProgress
+		});
 	},
 	// (browser adapter callback) used to restore history and generate event
 	loadStopped: function() {
@@ -438,7 +440,10 @@ enyo.kind({
 	},
 	// (browser adapter callback) generates event
 	mainDocumentLoadFailed: function(domain, errorCode, failingURL, localizedMessage) {
-		this.doError(errorCode, localizedMessage + ": " + failingURL);
+		this.doError({
+			errorCode: errorCode,
+			message: localizedMessage + ": " + failingURL
+		});
 	},
 	// (browser adapter callback) ?
 	linkClicked : function(url) {
@@ -446,7 +451,10 @@ enyo.kind({
 	// (browser adapter callback) called when loading a URL that should
 	// be redirected
 	urlRedirected: function(inUrl, inCookie) {
-		this.doUrlRedirected(inUrl, inCookie);
+		this.doUrlRedirected({
+			inUrl: inUrl,
+			inCookie: inCookie
+		});
 	},
 	// working
 	updateGlobalHistory: function(url, reload) {
@@ -463,11 +471,18 @@ enyo.kind({
 			}
 			window.PalmSystem.editorFocused(inFocused, inFieldType, inFieldActions);
 		}
-		this.doEditorFocusChanged(inFocused, inFieldType, inFieldActions);
+		this.doEditorFocusChanged({
+			inFocused: inFocused,
+			inFieldType: inFieldType,
+			inFieldActions: inFieldActions
+		});
 	},
 	// (browser adapter callback) called when the webview scrolls.
 	scrolledTo: function(inX, inY) {
-		this.doScrolledTo(inX, inY);
+		this.doScrolledTo({
+			x: inX,
+			y: inY
+		});
 	},
 	// (browser adapter callback) called to close a list selector
 	// gets called after we send a response, so no need to do anything
@@ -475,31 +490,50 @@ enyo.kind({
 	// },
 	// (browser adapter callback) called to open an alert dialog
 	dialogAlert: function(inMsg) {
-		this.doAlertDialog(inMsg);
+		this.doAlertDialog({
+			message: inMsg
+		});
 	},
 	// (browser adapter callback) called to open a confirm dialog
 	dialogConfirm: function(inMsg) {
-		this.doConfirmDialog(inMsg);
+		this.doConfirmDialog({
+			message: inMsg
+		});
 	},
 	// (browser adapter callback) called to open a prompt dialog
 	dialogPrompt: function(inMsg, inDefaultValue) {
-		this.doPromptDialog(inMsg, inDefaultValue);
+		this.doPromptDialog({
+			message: inMsg,
+			defaultValue: inDefaultValue
+		});
 	},
 	// (browser adapter callback) called to open a SSL confirm dialog
 	dialogSSLConfirm: function(inHost, inCode, inCertFile) {
-		this.doSSLConfirmDialog(inHost, inCode, inCertFile);
+		this.doSSLConfirmDialog({
+			host: inHost,
+			code: inCode,
+			certFile: inCertFile
+		});
 	},
 	// (browser adapter callback) called to open a user/password dialog
 	dialogUserPassword: function(inMsg) {
-		this.doUserPasswordDialog(inMsg);
+		this.doUserPasswordDialog({
+			message: inMsg
+		});
 	},
 	// (browser adapter callback) called when loading an unsupported MIME type
 	mimeNotSupported: function(inMimeType, inUrl) {
-		this.doFileLoad(inMimeType, inUrl);
+		this.doFileLoad({
+			mimeType: inMimeType,
+			url: inUrl
+		});
 	},
 	// (browser adapter callback) called when loading an unsupported MIME type
 	mimeHandoffUrl: function(inMimeType, inUrl) {
-		this.doFileLoad(inMimeType, inUrl);
+		this.doFileLoad({
+			mimeType: inMimeType,
+			url: inUrl
+		});
 	},
 	// (browser adapter callback) called when mouse moves in or out of a
 	// non-flash interactive rect
@@ -587,12 +621,18 @@ enyo.kind({
 			selected: inInfo.selected
 		};
 		var fn = "do" + inEvent.type.substr(0, 1).toUpperCase() + inEvent.type.substr(1);
-		return this[fn] && this[fn].apply(this, [e, h]);
+		return this[fn] && this[fn].apply(this, {
+			event: e,
+			extra: h
+		});
 	},
 	// renamed browser adapter callbacks:
 	// (browser adapter callback) renamed to showListSelector
 	showPopupMenu: function(inId, inItemsJson) {
-		this.doOpenSelect(inId, inItemsJson);
+		this.doOpenSelect({
+			id: inId,
+			items: inItemsJson
+		});
 	},
 	// (browser adapter callback) renamed to documentLoadFinished
 	didFinishDocumentLoad: function() {
@@ -1026,14 +1066,16 @@ enyo.kind({
 	callBrowserAdapter: function(inFuncName, inArgs) {
 		this.$.view.callBrowserAdapter(inFuncName, inArgs);
 	},
-	webviewClick: function(inSender, inEvent, inInfo) {
+	webviewClick: function(inSender, inEvent) {
+		// now that this gets passes {event: Object, extra: Object}
+		var inInfo = inEvent.extra;
 		if (inInfo) {
 			if (inInfo.element == "SELECT") {
 				this._selectRect = inInfo.bounds;
 			} else {
 				this._selectRect = null;
 			}
-			this.doClick(inEvent, inInfo);
+			this.doClick(inEvent.event);
 		}
 	}
 });
