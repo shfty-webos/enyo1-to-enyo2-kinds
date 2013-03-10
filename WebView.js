@@ -231,20 +231,20 @@ enyo.kind({
 		// we should improve this somehow...
 		//
 		
-		var bounds = this.owner.owner.getBounds(),
+		var bounds = this.owner.getBounds(),
 			ownerPaddingTop = 0,
 			ownerPaddingLeft = 0,
 			ownerPaddingRight = 0,
 			ownerPaddingBottom = 0,
 			ownerBorderWidth = 0;
 		
-		// if this.owner.owner.hasNode() then get paddings
-		this.owner.owner.hasNode() &&
-		  (ownerPaddingTop = enyo.dom.getComputedStyleValue(this.owner.owner.node, 'padding-top').replace('px', ''),
-		  ownerPaddingLeft = enyo.dom.getComputedStyleValue(this.owner.owner.node, 'padding-left').replace('px', ''),
-		  ownerPaddingRight = enyo.dom.getComputedStyleValue(this.owner.owner.node, 'padding-right').replace('px', ''),
-		  ownerPaddingBottom = enyo.dom.getComputedStyleValue(this.owner.owner.node, 'padding-bottom').replace('px', ''),
-		  ownerBorderWidth = enyo.dom.getComputedStyleValue(this.owner.owner.node, 'border-top-width').replace('px', ''));
+		// if this.owner.hasNode() then get paddings
+		this.owner.hasNode() &&
+		  (ownerPaddingTop = enyo.dom.getComputedStyleValue(this.owner.node, 'padding-top').replace('px', ''),
+		  ownerPaddingLeft = enyo.dom.getComputedStyleValue(this.owner.node, 'padding-left').replace('px', ''),
+		  ownerPaddingRight = enyo.dom.getComputedStyleValue(this.owner.node, 'padding-right').replace('px', ''),
+		  ownerPaddingBottom = enyo.dom.getComputedStyleValue(this.owner.node, 'padding-bottom').replace('px', ''),
+		  ownerBorderWidth = enyo.dom.getComputedStyleValue(this.owner.node, 'border-top-width').replace('px', ''));
 		
 		ownerBorderWidth = parseInt(ownerBorderWidth, 10);
 		
